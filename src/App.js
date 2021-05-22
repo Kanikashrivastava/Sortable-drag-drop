@@ -1,25 +1,30 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import {SortableContainer} from 'react-sortable-hoc';
+import arrayMove from 'array-move';
+import ToDoList from './components/ToDoList';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const SortableList = SortableContainer(ToDoList);
+
+const todosInit = [
+  {id: 1, content: 'content 1', isDone: false},
+  {id: 2, content: 'content 2', isDone: false},
+  {id: 3, content: 'content 3', isDone: false},
+  {id: 4, content: 'content 4', isDone: false},
+  {id: 5, content: 'content 5', isDone: false}
+];
+
+const App = () => {
+  const [todos, setTodos] = useState(todosInit);
+  const onSortEnd = (e) =>{
+    var newTodos = arrayMove(todos, e.oldIndex, e.newIndex )
+    setTodos(newTodos)
+  };
+  console.log(todos, '-todos-');
+  return (<div className="App">
+      <SortableList items={todos} onSortEnd={onSortEnd}/>
+    </div>);
+};
 
 export default App;
